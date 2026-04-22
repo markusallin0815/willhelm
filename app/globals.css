@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-blue: #1E4ED8;
+  --accent-gold: #F5B700;
+  --accent-gold-hover: #FFD54A;
+  --bg-white: #FAFAF8;
+  --bg-light-gray: #F1F3F6;
+  --text-dark: #0F172A;
+  --text-gray: #64748B;
+  --silver: #D9DEE8;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg-white);
+  color: var(--text-dark);
+  font-family: var(--font-outfit), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Subtle noise layer — fixed, no scroll repaints */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.022;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--text-dark); }
+::-webkit-scrollbar-thumb { background: var(--accent-gold); border-radius: 2px; }
+
+/* ─── Glowing Shadow Effect ─── */
+@property --hue { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --rotate { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --bg-y { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --bg-x { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --glow-translate-y { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --bg-size { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --glow-opacity { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --glow-blur { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --glow-scale { syntax: "<number>"; inherits: true; initial-value: 2; }
+@property --glow-radius { syntax: "<number>"; inherits: true; initial-value: 2; }
+@property --white-shadow { syntax: "<number>"; inherits: true; initial-value: 0; }
+
+.glow-container {
+  --card-color: #0F172A;
+  --card-radius: 1rem;
+  --border-width: 2px;
+  --bg-size: 1;
+  --hue: 0;
+  --hue-speed: 1;
+  --rotate: 0;
+  --animation-speed: 7s;
+  --interaction-speed: 0.55s;
+  --glow-scale: 1.2;
+  --scale-factor: 1;
+  --glow-blur: 8;
+  --glow-opacity: 0.35;
+  --glow-radius: 100;
+  --glow-rotate-unit: 1deg;
+  --glow-blob-size: 48px;
+  position: relative;
+  z-index: 2;
+  border-radius: var(--card-radius);
+  cursor: default;
+}
+
+.glow-container:before,
+.glow-container:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--card-radius);
+}
+
+.glow-content {
+  position: absolute;
+  inset: var(--border-width);
+  background: var(--card-color);
+  border-radius: calc(var(--card-radius) - var(--border-width));
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem 2.5rem;
+  overflow: hidden;
+}
+
+.glow-content:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: calc(100% + var(--border-width));
+  height: calc(100% + var(--border-width));
+  border-radius: calc(var(--card-radius) - var(--border-width));
+  box-shadow: 0 0 20px black;
+  mix-blend-mode: color-burn;
+  z-index: -1;
+  background: hsl(0deg 0% 16%) radial-gradient(
+    30% 30% at calc(var(--bg-x) * 1%) calc(var(--bg-y) * 1%),
+    hsl(calc(var(--hue) * var(--hue-speed) * 1deg) 100% 90%) calc(0% * var(--bg-size)),
+    hsl(calc(var(--hue) * var(--hue-speed) * 1deg) 100% 80%) calc(20% * var(--bg-size)),
+    hsl(calc(var(--hue) * var(--hue-speed) * 1deg) 100% 60%) calc(40% * var(--bg-size)),
+    transparent 100%
+  );
+  animation: glow-hue var(--animation-speed) linear infinite,
+             glow-rotate-bg var(--animation-speed) linear infinite;
+  transition: --bg-size var(--interaction-speed) ease;
+}
+
+.glow {
+  --glow-translate-y: 0;
+  display: block;
+  position: absolute;
+  width: var(--glow-blob-size);
+  height: var(--glow-blob-size);
+  animation: glow-spin var(--animation-speed) linear infinite;
+  transform: rotateZ(calc(var(--rotate) * var(--glow-rotate-unit)));
+  transform-origin: center;
+  border-radius: calc(var(--glow-radius) * 10vw);
+}
+
+.glow:after {
+  content: "";
+  display: block;
+  z-index: -2;
+  filter: blur(calc(var(--glow-blur) * 10px));
+  width: 130%;
+  height: 130%;
+  left: -15%;
+  top: -15%;
+  background: hsl(calc(var(--hue) * var(--hue-speed) * 1deg) 100% 60%);
+  position: relative;
+  border-radius: calc(var(--glow-radius) * 10vw);
+  animation: glow-hue var(--animation-speed) linear infinite;
+  transform: scaleY(calc(var(--glow-scale) * var(--scale-factor) / 1.1))
+             scaleX(calc(var(--glow-scale) * var(--scale-factor) * 1.2))
+             translateY(calc(var(--glow-translate-y) * 1%));
+  opacity: var(--glow-opacity);
+}
+
+@keyframes glow-rotate-bg {
+  0%   { --bg-x: 0;   --bg-y: 0; }
+  25%  { --bg-x: 100; --bg-y: 0; }
+  50%  { --bg-x: 100; --bg-y: 100; }
+  75%  { --bg-x: 0;   --bg-y: 100; }
+  100% { --bg-x: 0;   --bg-y: 0; }
+}
+
+@keyframes glow-spin {
+  from { --rotate: -70; --glow-translate-y: -65; }
+  to   { --rotate: calc(360 - 70); --glow-translate-y: -65; }
+}
+
+@keyframes glow-hue {
+  0%   { --hue: 0; }
+  100% { --hue: 360; }
+}
