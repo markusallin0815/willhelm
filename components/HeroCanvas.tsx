@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useTransform, useMotionValue, motion, useMotionValueEvent } from 'framer-motion';
+import { useLanguage } from '@/context/LanguageContext';
 
 const TOTAL_FRAMES = 192;
 const EAGER_FRAMES = 20;
@@ -22,6 +23,7 @@ function interpolate(p: number, inputs: number[], outputs: number[]): number {
 }
 
 export default function HeroCanvas() {
+  const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
@@ -217,7 +219,7 @@ export default function HeroCanvas() {
               transition={{ type: 'spring', stiffness: 60, damping: 16, delay: 0.2 }}
               style={{ display: 'inline-block' }}
             >
-              Der Komponist.
+              {t.hero.composer}
             </motion.span>
             {' '}
             <motion.span
@@ -226,7 +228,7 @@ export default function HeroCanvas() {
               transition={{ type: 'spring', stiffness: 60, damping: 16, delay: 0.8 }}
               style={{ display: 'inline-block' }}
             >
-              Die Figur.
+              {t.hero.figure}
             </motion.span>
           </p>
           <h1
@@ -244,7 +246,7 @@ export default function HeroCanvas() {
             className="mt-5 text-xs uppercase text-center"
             style={{ color: '#C8831A', letterSpacing: '0.3em', textShadow, fontSize: 'clamp(0.85rem, 1.8vw, 1.3rem)' }}
           >
-            Playmobil-Sonderedition · Halle (Saale)
+            {t.hero.edition}
           </p>
         </motion.div>
 
@@ -262,9 +264,10 @@ export default function HeroCanvas() {
                 color: '#F0E3CA',
                 letterSpacing: '-0.02em',
                 textShadow,
+                whiteSpace: 'pre-line',
               }}
             >
-              Barocke<br />Detailtreue.
+              {t.hero.detail_title}
             </h2>
             <p
               className="mt-4 font-light"
@@ -274,11 +277,10 @@ export default function HeroCanvas() {
                 maxWidth: '340px',
                 lineHeight: 1.75,
                 textShadow,
+                whiteSpace: 'pre-line',
               }}
             >
-              Dreispitz, Perücke, Gehrock.<br />
-              Federkiel, Partitur und Podest —<br />
-              alles originalgetreu nachgebildet.
+              {t.hero.detail_desc}
             </p>
           </div>
         </motion.div>
@@ -297,9 +299,10 @@ export default function HeroCanvas() {
                 color: '#F0E3CA',
                 letterSpacing: '-0.02em',
                 textShadow,
+                whiteSpace: 'pre-line',
               }}
             >
-              Exklusiv.<br />Nur 6,99 €.
+              {t.hero.cta_title}
             </h2>
             <p
               className="mt-4 font-light"
@@ -310,11 +313,10 @@ export default function HeroCanvas() {
                 lineHeight: 1.75,
                 marginLeft: 'auto',
                 textShadow,
+                whiteSpace: 'pre-line',
               }}
             >
-              Im Händel-Haus, Tourist-Information<br />
-              und bei Händlern in der Innenstadt.<br />
-              Online auf hallesaale.shop.
+              {t.hero.cta_desc}
             </p>
             <motion.a
               href="https://www.hallesaale.shop?utm_source=haendel-lp&utm_medium=referral&utm_campaign=playmobil-haendel"
@@ -326,7 +328,7 @@ export default function HeroCanvas() {
               whileTap={{ scale: 0.97 }}
               transition={{ type: 'spring', stiffness: 360, damping: 24 }}
             >
-              Jetzt kaufen →
+              {t.hero.buy_btn}
             </motion.a>
           </div>
         </motion.div>
@@ -337,7 +339,7 @@ export default function HeroCanvas() {
           style={{ opacity: text1Opacity, zIndex: 4 }}
         >
           <p className="text-xs uppercase" style={{ color: '#7A6045', letterSpacing: '0.3em' }}>
-            Scroll
+            {t.hero.scroll}
           </p>
           <div className="w-px h-8 relative overflow-hidden" style={{ background: '#2B1608' }}>
             <div
