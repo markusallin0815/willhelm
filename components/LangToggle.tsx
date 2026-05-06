@@ -7,7 +7,7 @@ export default function LangToggle() {
 
   return (
     <div
-      className="fixed top-4 right-4 z-50 flex items-center gap-1 text-xs font-semibold tracking-widest uppercase select-none"
+      className="fixed top-4 right-4 z-50 flex items-center gap-2 text-sm font-semibold tracking-widest uppercase select-none"
       style={{ letterSpacing: '0.15em' }}
     >
       <button
