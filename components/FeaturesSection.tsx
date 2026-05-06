@@ -1,52 +1,30 @@
-import FeatureReveal from './FeatureReveal';
+'use client';
 
-const features = [
-  {
-    tag: 'Die Figur',
-    title: 'Georg Friedrich Händel',
-    desc: 'Vor dem Händel-Haus in Halle (Saale) — dem Geburtshaus des großen Komponisten. Die Playmobil-Figur in barockem Kostüm: Dreispitz, Perücke, Gehrock mit Goldverzierungen.',
-    accent: '#7A4A10',
-    img: '/haendel-haus.jpg',
-    objectPosition: 'center center',
-    aspectRatio: '16/9',
-  },
-  {
-    tag: 'Zubehör',
-    title: 'Federkiel & Podest',
-    desc: 'Mit großem Federkiel, signierter Partitur-Urkunde und weißem Marmor-Podest mit eingravierten goldenen Lettern — HAENDEL. Jedes Detail originalgetreu nachgebildet.',
-    accent: '#C8831A',
-    img: '/haendel-haus.jpg',
-    objectPosition: 'center center',
-    aspectRatio: '16/9',
-  },
-  {
-    tag: 'Verpackung',
-    title: 'Sonderedition Händel-Haus',
-    desc: 'Exklusiv gestaltet in Kooperation mit dem Händel-Haus Halle (Saale). Die Verpackung zeigt das historische Geburtshaus des Komponisten — ein Sammlerstück für sich.',
-    accent: '#7A4A10',
-    img: '/haendel-haus.jpg',
-    objectPosition: 'center center',
-    aspectRatio: '16/9',
-  },
-] as const;
+import FeatureReveal from './FeatureReveal';
+import { useLanguage } from '@/context/LanguageContext';
+
+const featureAccents = ['#7A4A10', '#C8831A', '#7A4A10'] as const;
+const featureImgs = ['/haendel-haus.jpg', '/haendel-haus.jpg', '/haendel-haus.jpg'] as const;
 
 export default function FeaturesSection() {
+  const { t } = useLanguage();
+
   return (
     <section className="bg-bg-white py-24 px-6 md:px-16">
       <div className="max-w-7xl mx-auto">
         <FeatureReveal>
-          <p className="text-text-gray text-xs uppercase tracking-[0.25em] mb-2">Ausstattung</p>
+          <p className="text-text-gray text-xs uppercase tracking-[0.25em] mb-2">{t.features.badge}</p>
           <h2
             className="text-text-dark font-black tracking-tight leading-none mb-16"
-            style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}
+            style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', whiteSpace: 'pre-line' }}
           >
-            Jedes Detail<br />trägt Geschichte.
+            {t.features.headline}
           </h2>
         </FeatureReveal>
 
         <div className="flex flex-col gap-20">
-          {features.map((feature, i) => (
-            <FeatureReveal key={feature.title} delay={0.08}>
+          {t.features.items.map((feature, i) => (
+            <FeatureReveal key={i} delay={0.08}>
               <div
                 className={`grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center ${
                   i % 2 === 1 ? 'md:[&>*:first-child]:order-2' : ''
@@ -54,18 +32,18 @@ export default function FeaturesSection() {
               >
                 <div
                   className="rounded-3xl overflow-hidden group"
-                  style={{ aspectRatio: feature.aspectRatio, border: `1px solid ${feature.accent}25` }}
+                  style={{ aspectRatio: '16/9', border: `1px solid ${featureAccents[i]}25` }}
                 >
                   <img
-                    src={feature.img}
+                    src={featureImgs[i]}
                     alt={feature.title}
                     className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                    style={{ objectPosition: feature.objectPosition }}
+                    style={{ objectPosition: 'center center' }}
                   />
                 </div>
                 <div>
                   <p
-                    style={{ color: feature.accent }}
+                    style={{ color: featureAccents[i] }}
                     className="text-xs uppercase tracking-[0.25em] font-semibold mb-3"
                   >
                     {feature.tag}
