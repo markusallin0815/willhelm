@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Nunito_Sans, Cormorant_Garamond, EB_Garamond } from 'next/font/google';
 import CookieBanner from '@/components/CookieBanner';
+import LangToggle from '@/components/LangToggle';
+import { LanguageProvider } from '@/context/LanguageContext';
 import './globals.css';
 
 const nunitoSans = Nunito_Sans({
@@ -59,8 +61,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="de">
       <body className={`${nunitoSans.variable} ${cormorant.variable} ${ebGaramond.variable} font-nunito-sans antialiased overflow-x-hidden`}>
-        {children}
-        <CookieBanner />
+        <LanguageProvider>
+          <LangToggle />
+          {children}
+          <CookieBanner />
+        </LanguageProvider>
       </body>
     </html>
   );
