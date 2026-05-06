@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useTransform, useMotionValue, motion, useMotionValueEvent } from 'framer-motion';
 
 const TOTAL_FRAMES = 192;
-const FRAME_PATH = (i: number) => `/frames/frame-${String(i).padStart(3, '0')}.jpg`;
+const EAGER_FRAMES = 20;
+const FRAME_PATH = (i: number) => `/frames/frame-${String(i).padStart(3, '0')}.webp`;
 const FRAME_W = 1280;
 const FRAME_H = 720;
 
@@ -58,29 +59,27 @@ export default function HeroCanvas() {
     (p) => interpolate(p, [0.66, 0.76, 1.0], [0, 1, 1]));
 
   useEffect(() => {
-    let loadedCount = 0;
     const images: HTMLImageElement[] = new Array(TOTAL_FRAMES);
-    for (let i = 0; i < TOTAL_FRAMES; i++) {
+    imagesRef.current = images;
+    let eagerDone = 0;
+
+    function loadFrame(i: number) {
       const img = new Image();
       img.src = FRAME_PATH(i + 1);
-      const idx = i;
-      img.onload = () => {
-        loadedCount++;
-        if (loadedCount === TOTAL_FRAMES) {
-          imagesRef.current = images;
-          setLoaded(true);
-          drawFrame(0, images);
+      img.onload = img.onerror = () => {
+        if (i < EAGER_FRAMES) {
+          eagerDone++;
+          if (eagerDone === EAGER_FRAMES) {
+            setLoaded(true);
+            drawFrame(0, images);
+            for (let j = EAGER_FRAMES; j < TOTAL_FRAMES; j++) loadFrame(j);
+          }
         }
       };
-      img.onerror = () => {
-        loadedCount++;
-        if (loadedCount === TOTAL_FRAMES) {
-          imagesRef.current = images;
-          setLoaded(true);
-        }
-      };
-      images[idx] = img;
+      images[i] = img;
     }
+
+    for (let i = 0; i < EAGER_FRAMES; i++) loadFrame(i);
   }, []);
 
   function drawFrame(index: number, images?: HTMLImageElement[]) {
@@ -89,8 +88,15 @@ export default function HeroCanvas() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     const imgs = images || imagesRef.current;
-    const img = imgs[Math.round(index)];
-    if (!img || !img.complete) return;
+    let idx = Math.round(index);
+    let img = imgs[idx];
+    if (!img || !img.complete) {
+      for (let d = 1; d < EAGER_FRAMES; d++) {
+        const prev = imgs[Math.max(0, idx - d)];
+        if (prev?.complete) { img = prev; break; }
+      }
+      if (!img?.complete) return;
+    }
 
     const { width, height } = canvas;
     ctx.clearRect(0, 0, width, height);

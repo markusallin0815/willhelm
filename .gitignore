@@ -26,3 +26,6 @@ Design_aktuell.jpg
 public/feature-verpackung-v2.png
 public/feature-verpackung-v3.png
 public/feature-verpackung-v4.png
+
+# Old JPEG frames (replaced by WebP)
+public/frames/*.jpg
