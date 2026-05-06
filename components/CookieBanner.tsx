@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function CookieBanner() {
+  const { t } = useLanguage();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -36,15 +38,15 @@ export default function CookieBanner() {
         >
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-10">
             <p className="text-silver text-sm leading-relaxed flex-1">
-              Diese Website verwendet ausschließlich technisch notwendige Cookies.{' '}
-              <Link href="/datenschutz" className="text-accent-gold hover:underline">Datenschutzerklärung</Link>
+              {t.cookie.text}{' '}
+              <Link href="/datenschutz" className="text-accent-gold hover:underline">{t.cookie.privacy_link}</Link>
             </p>
             <div className="flex gap-3 flex-shrink-0">
               <button
                 onClick={decline}
                 className="text-text-gray text-sm px-5 py-2 rounded-xl border border-white/10 hover:border-white/25 transition-colors"
               >
-                Ablehnen
+                {t.cookie.decline}
               </button>
               <button
                 onClick={accept}
@@ -53,7 +55,7 @@ export default function CookieBanner() {
                 onMouseEnter={e => (e.currentTarget.style.background = '#DFA030')}
                 onMouseLeave={e => (e.currentTarget.style.background = '#C8831A')}
               >
-                Akzeptieren
+                {t.cookie.accept}
               </button>
             </div>
           </div>
