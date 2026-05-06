@@ -9,17 +9,28 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'primary-blue': '#1E4ED8',
-        'accent-gold': '#F5B700',
-        'accent-gold-hover': '#FFD54A',
-        'bg-white': '#FAFAF8',
-        'bg-light-gray': '#F1F3F6',
-        'text-dark': '#0F172A',
-        'text-gray': '#64748B',
-        silver: '#D9DEE8',
+        'primary-blue': '#2B1608',
+        'accent-gold': '#C8831A',
+        'accent-gold-hover': '#DFA030',
+        'bg-white': '#F0E3CA',
+        'bg-light-gray': '#E8D5B5',
+        'text-dark': '#0F0704',
+        'text-gray': '#7A6045',
+        silver: '#C0A882',
       },
       fontFamily: {
-        outfit: ['var(--font-outfit)', 'system-ui', 'sans-serif'],
+        'nunito-sans': ['var(--font-nunito-sans)', 'system-ui', 'sans-serif'],
+        'cormorant': ['var(--font-cormorant)', 'Georgia', 'serif'],
+        'eb-garamond': ['var(--font-eb-garamond)', 'Georgia', 'serif'],
+      },
+      animation: {
+        aurora: 'aurora 60s linear infinite',
+      },
+      keyframes: {
+        aurora: {
+          from: { backgroundPosition: '50% 50%, 50% 50%' },
+          to: { backgroundPosition: '350% 50%, 350% 50%' },
+        },
       },
     },
   },

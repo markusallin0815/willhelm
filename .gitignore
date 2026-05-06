@@ -6,3 +6,23 @@ node_modules/
 .DS_Store
 *.pem
 .env*.local
+
+# Video source files
+*.mp4
+*.tar.gz
+
+# Tool caches
+.firecrawl/
+*.skill
+
+# Source/reference images in root
+PlaymobilfigurGeorgFriedrichHaendel.jpg
+PlaymobilfigurGeorgFriedrichHaendelVerpackung.png
+"haendel vor dem Haus.jpg"
+playmobil handel.jpg
+Design_aktuell.jpg
+
+# Old image versions
+public/feature-verpackung-v2.png
+public/feature-verpackung-v3.png
+public/feature-verpackung-v4.png

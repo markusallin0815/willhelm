@@ -3,7 +3,7 @@ interface IconProps {
   size?: number;
 }
 
-export function SwordIcon({ color = '#1E4ED8', size = 80 }: IconProps) {
+export function SwordIcon({ color = '#7A4A10', size = 80 }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 80 80" fill="none" aria-hidden>
       <line x1="20" y1="60" x2="60" y2="20" stroke={color} strokeWidth="3" strokeLinecap="round" />
@@ -14,7 +14,7 @@ export function SwordIcon({ color = '#1E4ED8', size = 80 }: IconProps) {
   );
 }
 
-export function ShieldIcon({ color = '#F5B700', size = 80 }: IconProps) {
+export function ShieldIcon({ color = '#C8831A', size = 80 }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 80 80" fill="none" aria-hidden>
       <path
@@ -28,7 +28,7 @@ export function ShieldIcon({ color = '#F5B700', size = 80 }: IconProps) {
   );
 }
 
-export function StarFourIcon({ color = '#1E4ED8', size = 80 }: IconProps) {
+export function StarFourIcon({ color = '#7A4A10', size = 80 }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 80 80" fill="none" aria-hidden>
       <path

@@ -2,25 +2,31 @@ import FeatureReveal from './FeatureReveal';
 
 const features = [
   {
-    tag: 'Kopfbedeckung',
-    title: 'Der Helm',
-    desc: 'Detailgetreue Nachbildung eines mittelalterlichen Ritterhelms aus hochwertigem Kunststoff. Abnehmbar, aufklappbares Visier, eingravierte Burglöwen-Insignie.',
-    accent: '#1E4ED8',
-    img: '/helm.png',
-  },
-  {
-    tag: 'Rüstung',
-    title: 'Die Rüstung',
-    desc: 'Vollständige Plattenrüstung in zeitloser Silberoptik mit goldenen Verzierungen. Jedes Teil einzeln abnehmbar — originalgetreue Konstruktion.',
-    accent: '#F5B700',
-    img: '/ruestung.jpg',
+    tag: 'Die Figur',
+    title: 'Georg Friedrich Händel',
+    desc: 'Vor dem Händel-Haus in Halle (Saale) — dem Geburtshaus des großen Komponisten. Die Playmobil-Figur in barockem Kostüm: Dreispitz, Perücke, Gehrock mit Goldverzierungen.',
+    accent: '#7A4A10',
+    img: '/haendel-haus.jpg',
+    objectPosition: 'center center',
+    aspectRatio: '16/9',
   },
   {
     tag: 'Zubehör',
-    title: 'Schwert & Schild',
-    desc: 'Königliches Zubehör-Set: Zweihänder-Schwert mit Kreuzgard und Wappenschild mit dem Motiv des Hauses Willhelm — in Gold und Blau.',
-    accent: '#1E4ED8',
-    img: '/schwert.png',
+    title: 'Federkiel & Podest',
+    desc: 'Mit großem Federkiel, signierter Partitur-Urkunde und weißem Marmor-Podest mit eingravierten goldenen Lettern — HAENDEL. Jedes Detail originalgetreu nachgebildet.',
+    accent: '#C8831A',
+    img: '/haendel-haus.jpg',
+    objectPosition: 'center center',
+    aspectRatio: '16/9',
+  },
+  {
+    tag: 'Verpackung',
+    title: 'Sonderedition Händel-Haus',
+    desc: 'Exklusiv gestaltet in Kooperation mit dem Händel-Haus Halle (Saale). Die Verpackung zeigt das historische Geburtshaus des Komponisten — ein Sammlerstück für sich.',
+    accent: '#7A4A10',
+    img: '/haendel-haus.jpg',
+    objectPosition: 'center center',
+    aspectRatio: '16/9',
   },
 ] as const;
 
@@ -34,7 +40,7 @@ export default function FeaturesSection() {
             className="text-text-dark font-black tracking-tight leading-none mb-16"
             style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}
           >
-            Jedes Detail<br />erzählt Geschichte.
+            Jedes Detail<br />trägt Geschichte.
           </h2>
         </FeatureReveal>
 
@@ -47,13 +53,14 @@ export default function FeaturesSection() {
                 }`}
               >
                 <div
-                  className="rounded-3xl overflow-hidden"
-                  style={{ aspectRatio: '4/3', border: `1px solid ${feature.accent}25` }}
+                  className="rounded-3xl overflow-hidden group"
+                  style={{ aspectRatio: feature.aspectRatio, border: `1px solid ${feature.accent}25` }}
                 >
                   <img
                     src={feature.img}
                     alt={feature.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                    style={{ objectPosition: feature.objectPosition }}
                   />
                 </div>
                 <div>

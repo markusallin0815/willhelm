@@ -3,14 +3,24 @@
 @tailwind utilities;
 
 :root {
-  --primary-blue: #1E4ED8;
-  --accent-gold: #F5B700;
-  --accent-gold-hover: #FFD54A;
-  --bg-white: #FAFAF8;
-  --bg-light-gray: #F1F3F6;
-  --text-dark: #0F172A;
-  --text-gray: #64748B;
-  --silver: #D9DEE8;
+  /* Aurora color tokens */
+  --white: #ffffff;
+  --black: #000000;
+  --transparent: transparent;
+  --blue-300: #93c5fd;
+  --blue-400: #60a5fa;
+  --blue-500: #3b82f6;
+  --indigo-300: #a5b4fc;
+  --violet-200: #ddd6fe;
+
+  --primary-blue: #2B1608;
+  --accent-gold: #C8831A;
+  --accent-gold-hover: #DFA030;
+  --bg-white: #F0E3CA;
+  --bg-light-gray: #E8D5B5;
+  --text-dark: #0F0704;
+  --text-gray: #7A6045;
+  --silver: #C0A882;
 }
 
 * {
@@ -26,7 +36,7 @@ html {
 body {
   background: var(--bg-white);
   color: var(--text-dark);
-  font-family: var(--font-outfit), system-ui, sans-serif;
+  font-family: var(--font-nunito-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -62,7 +72,7 @@ body::after {
 @property --white-shadow { syntax: "<number>"; inherits: true; initial-value: 0; }
 
 .glow-container {
-  --card-color: #0F172A;
+  --card-color: #0F0704;
   --card-radius: 1rem;
   --border-width: 2px;
   --bg-size: 1;

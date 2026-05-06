@@ -30,7 +30,6 @@ export default function HeroCanvas() {
 
   const progress = useMotionValue(0);
 
-  // Raw scroll listener — avoids Framer Motion useScroll bugs with sticky children
   useEffect(() => {
     function onScroll() {
       const container = containerRef.current;
@@ -58,7 +57,6 @@ export default function HeroCanvas() {
   const text3Opacity = useTransform(progress,
     (p) => interpolate(p, [0.66, 0.76, 1.0], [0, 1, 1]));
 
-  // Preload all frames
   useEffect(() => {
     let loadedCount = 0;
     const images: HTMLImageElement[] = new Array(TOTAL_FRAMES);
@@ -96,10 +94,9 @@ export default function HeroCanvas() {
 
     const { width, height } = canvas;
     ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = '#0F172A';
+    ctx.fillStyle = '#0F0704';
     ctx.fillRect(0, 0, width, height);
 
-    // Object-cover: scale to fill viewport, crop excess
     const scaleW = width / FRAME_W;
     const scaleH = height / FRAME_H;
     const scale = Math.max(scaleW, scaleH);
@@ -111,7 +108,6 @@ export default function HeroCanvas() {
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
   }
 
-  // Resize canvas to window
   useEffect(() => {
     function resize() {
       const canvas = canvasRef.current;
@@ -125,7 +121,6 @@ export default function HeroCanvas() {
     return () => window.removeEventListener('resize', resize);
   }, [loaded]);
 
-  // RAF-based frame drawing
   useMotionValueEvent(frameIndex, 'change', (latest) => {
     const idx = Math.round(Math.max(0, Math.min(TOTAL_FRAMES - 1, latest)));
     frameIndexRef.current = idx;
@@ -137,17 +132,15 @@ export default function HeroCanvas() {
 
   return (
     <div ref={containerRef} className="relative" style={{ height: '600vh' }}>
-      {/* Gold loading bar */}
       {!loaded && (
-        <div className="fixed top-0 left-0 right-0 z-50 h-[3px]" style={{ background: '#0F172A' }}>
+        <div className="fixed top-0 left-0 right-0 z-50 h-[3px]" style={{ background: '#0F0704' }}>
           <div className="h-full bg-accent-gold" style={{ width: '30%' }} />
         </div>
       )}
 
-      {/* Sticky canvas section */}
       <div
         className="sticky top-0 overflow-hidden"
-        style={{ height: '100dvh', background: '#0F172A' }}
+        style={{ height: '100dvh', background: '#0F0704' }}
       >
         <canvas
           ref={canvasRef}
@@ -155,28 +148,48 @@ export default function HeroCanvas() {
           style={{ display: 'block' }}
         />
 
-        {/* Dark scrim — ensures text contrast on any frame */}
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ background: 'rgba(0,0,0,0.38)', zIndex: 1 }}
+          style={{ background: 'rgba(0,0,0,0.35)', zIndex: 1 }}
         />
 
-        {/* Bottom fade */}
+        {/* Background lights */}
+        <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 2 }}>
+          <div style={{
+            position: 'absolute', top: '-15%', left: '-5%',
+            width: '55%', height: '70%',
+            background: 'radial-gradient(circle, rgba(200,131,26,0.22) 0%, transparent 70%)',
+            filter: 'blur(60px)',
+          }} />
+          <div style={{
+            position: 'absolute', top: '-10%', right: '-5%',
+            width: '50%', height: '60%',
+            background: 'radial-gradient(circle, rgba(160,90,20,0.18) 0%, transparent 70%)',
+            filter: 'blur(60px)',
+          }} />
+          <div style={{
+            position: 'absolute', top: '20%', left: '35%',
+            width: '40%', height: '40%',
+            background: 'radial-gradient(circle, rgba(200,131,26,0.14) 0%, transparent 70%)',
+            filter: 'blur(80px)',
+          }} />
+        </div>
+
         <div
           className="absolute bottom-0 left-0 w-full pointer-events-none"
-          style={{ height: '340px', background: 'linear-gradient(to bottom, transparent 0%, rgba(15,23,42,0.6) 50%, #0F172A 100%)', zIndex: 2 }}
+          style={{ height: '340px', background: 'linear-gradient(to bottom, transparent 0%, rgba(8,8,8,0.6) 50%, #0F0704 100%)', zIndex: 3 }}
         />
 
         {/* Text 1 — centered: intro */}
         <motion.div
           className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
-          style={{ opacity: text1Opacity, zIndex: 3 }}
+          style={{ opacity: text1Opacity, zIndex: 4 }}
         >
           <p
             className="mb-4 font-light text-center"
             style={{
               fontSize: 'clamp(1.4rem, 3vw, 2.2rem)',
-              color: '#F5B700',
+              color: '#C8831A',
               letterSpacing: '0.08em',
               textShadow,
             }}
@@ -187,7 +200,7 @@ export default function HeroCanvas() {
               transition={{ type: 'spring', stiffness: 60, damping: 16, delay: 0.2 }}
               style={{ display: 'inline-block' }}
             >
-              Der Helm.
+              Der Komponist.
             </motion.span>
             {' '}
             <motion.span
@@ -196,59 +209,59 @@ export default function HeroCanvas() {
               transition={{ type: 'spring', stiffness: 60, damping: 16, delay: 0.8 }}
               style={{ display: 'inline-block' }}
             >
-              Der Held.
+              Die Figur.
             </motion.span>
           </p>
           <h1
             className="font-black text-center leading-none"
             style={{
               fontSize: 'clamp(4rem, 13vw, 11rem)',
-              color: '#FAFAF8',
+              color: '#F0E3CA',
               letterSpacing: '-0.02em',
               textShadow,
             }}
           >
-            Ritter<br />Willhelm
+            HÄNDEL
           </h1>
           <p
             className="mt-5 text-xs uppercase text-center"
-            style={{ color: '#F5B700', letterSpacing: '0.3em', textShadow, fontSize: 'clamp(0.85rem, 1.8vw, 1.3rem)' }}
+            style={{ color: '#C8831A', letterSpacing: '0.3em', textShadow, fontSize: 'clamp(0.85rem, 1.8vw, 1.3rem)' }}
           >
-            Stadtmarketing Halle (Saale) präsentiert
+            Playmobil-Sonderedition · Halle (Saale)
           </p>
         </motion.div>
 
         {/* Text 2 — left: detail */}
         <motion.div
           className="absolute inset-0 flex items-center pointer-events-none"
-          style={{ opacity: text2Opacity, paddingLeft: '8vw', zIndex: 3 }}
+          style={{ opacity: text2Opacity, paddingLeft: '8vw', zIndex: 4 }}
         >
           <div>
-            <div className="mb-3 h-px" style={{ width: '40px', background: '#F5B700' }} />
+            <div className="mb-3 h-px" style={{ width: '40px', background: '#C8831A' }} />
             <h2
               className="font-black leading-tight"
               style={{
                 fontSize: 'clamp(2rem, 6vw, 5.5rem)',
-                color: '#FAFAF8',
+                color: '#F0E3CA',
                 letterSpacing: '-0.02em',
                 textShadow,
               }}
             >
-              Mittelalterliche<br />Präzision.
+              Barocke<br />Detailtreue.
             </h2>
             <p
               className="mt-4 font-light"
               style={{
                 fontSize: 'clamp(0.875rem, 1.5vw, 1.1rem)',
-                color: '#D9DEE8',
+                color: '#C0A882',
                 maxWidth: '340px',
                 lineHeight: 1.75,
                 textShadow,
               }}
             >
-              Jedes Detail handgefertigt.<br />
-              Helm, Rüstung, Schwert und Schild —<br />
-              alles einzeln abnehmbar.
+              Dreispitz, Perücke, Gehrock.<br />
+              Federkiel, Partitur und Podest —<br />
+              alles originalgetreu nachgebildet.
             </p>
           </div>
         </motion.div>
@@ -256,61 +269,64 @@ export default function HeroCanvas() {
         {/* Text 3 — right: CTA */}
         <motion.div
           className="absolute inset-0 flex items-center justify-end"
-          style={{ opacity: text3Opacity, paddingRight: '8vw', pointerEvents: 'none', zIndex: 3 }}
+          style={{ opacity: text3Opacity, paddingRight: '8vw', pointerEvents: 'none', zIndex: 4 }}
         >
           <div className="text-right" style={{ pointerEvents: 'auto' }}>
-            <div className="mb-3 h-px ml-auto" style={{ width: '40px', background: '#F5B700' }} />
+            <div className="mb-3 h-px ml-auto" style={{ width: '40px', background: '#C8831A' }} />
             <h2
               className="font-black leading-tight"
               style={{
                 fontSize: 'clamp(2rem, 6vw, 5.5rem)',
-                color: '#FAFAF8',
+                color: '#F0E3CA',
                 letterSpacing: '-0.02em',
                 textShadow,
               }}
             >
-              Limitiert.<br />Unwiederbringlich.
+              Exklusiv.<br />Nur 6,99 €.
             </h2>
             <p
               className="mt-4 font-light"
               style={{
                 fontSize: 'clamp(0.875rem, 1.5vw, 1.1rem)',
-                color: '#D9DEE8',
+                color: '#C0A882',
                 maxWidth: '340px',
                 lineHeight: 1.75,
                 marginLeft: 'auto',
                 textShadow,
               }}
             >
-              Vorbestellung bis 15. Juni 2026.<br />
-              Danach: kein zweites Mal.
+              Im Händel-Haus, Tourist-Information<br />
+              und bei Händlern in der Innenstadt.<br />
+              Online auf hallesaale.shop.
             </p>
             <motion.a
-              href="#vorbestellen"
-              className="inline-flex items-center gap-2 mt-6 font-semibold px-6 py-3 rounded-full text-sm tracking-wide"
-              style={{ background: '#F5B700', color: '#0F172A' }}
-              whileHover={{ scale: 1.04, backgroundColor: '#FFD54A' }}
+              href="https://www.hallesaale.shop?utm_source=haendel-lp&utm_medium=referral&utm_campaign=playmobil-haendel"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-6 font-semibold px-8 py-4 rounded-2xl text-base tracking-wide"
+              style={{ background: '#C8831A', color: '#0F0704' }}
+              whileHover={{ scale: 1.04, backgroundColor: '#DFA030' }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: 'spring', stiffness: 360, damping: 24 }}
             >
-              Jetzt vorbestellen →
+              Jetzt kaufen →
             </motion.a>
           </div>
         </motion.div>
 
-        {/* Scroll indicator — fades with text 1 */}
+        {/* Scroll indicator */}
         <motion.div
           className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
-          style={{ opacity: text1Opacity, zIndex: 3 }}
+          style={{ opacity: text1Opacity, zIndex: 4 }}
         >
-          <p className="text-xs uppercase" style={{ color: '#64748B', letterSpacing: '0.3em' }}>
+          <p className="text-xs uppercase" style={{ color: '#7A6045', letterSpacing: '0.3em' }}>
             Scroll
           </p>
-          <div className="w-px h-8 relative overflow-hidden" style={{ background: '#1E293B' }}>
+          <div className="w-px h-8 relative overflow-hidden" style={{ background: '#2B1608' }}>
             <div
               className="absolute top-0 left-0 w-full"
               style={{
-                background: 'linear-gradient(to bottom, transparent, #F5B700, transparent)',
+                background: 'linear-gradient(to bottom, transparent, #C8831A, transparent)',
                 height: '50%',
                 animation: 'scrollPulse 1.5s ease-in-out infinite',
               }}
