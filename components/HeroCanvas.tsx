@@ -32,16 +32,23 @@ export default function HeroCanvas() {
   const progress = useMotionValue(0);
 
   useEffect(() => {
+    function getVh() {
+      return window.visualViewport?.height ?? window.innerHeight;
+    }
     function onScroll() {
       const container = containerRef.current;
       if (!container) return;
-      const end = container.offsetHeight - window.innerHeight;
+      const end = container.offsetHeight - getVh();
       const p = Math.min(1, Math.max(0, window.scrollY / end));
       progress.set(p);
     }
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.visualViewport?.addEventListener('resize', onScroll);
     onScroll();
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.visualViewport?.removeEventListener('resize', onScroll);
+    };
   }, [progress]);
 
   const frameIndex = useTransform(progress, [0, 1], [0, TOTAL_FRAMES - 1]);
@@ -118,13 +125,17 @@ export default function HeroCanvas() {
     function resize() {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
       if (loaded) drawFrame(frameIndexRef.current);
     }
     resize();
     window.addEventListener('resize', resize);
-    return () => window.removeEventListener('resize', resize);
+    window.visualViewport?.addEventListener('resize', resize);
+    return () => {
+      window.removeEventListener('resize', resize);
+      window.visualViewport?.removeEventListener('resize', resize);
+    };
   }, [loaded]);
 
   useMotionValueEvent(frameIndex, 'change', (latest) => {
